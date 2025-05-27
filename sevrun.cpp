@@ -4,7 +4,7 @@
 /*
 	 _____ _____ __ __ _____ _____ _____
 	|   __|   __|  |  |  __ |  |  |   | | SEVRUN tool for running local server
-	|__   |   __|  |  |  | _|  |  | | | | version 1.0
+	|__   |   __|  |  |  | -|  |  | | | | version 1.0
 	|_____|_____|\___/|__|__|\___/|_|___| https://github.com/Jedybox/sevrun
 
 	* This file is part of the SEVRUN project.
