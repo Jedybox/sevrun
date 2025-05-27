@@ -71,9 +71,10 @@ void PrintHelp() {
 #define CHECK_JSON_FILE
 
 bool CheckJsonFile(const std::string& filename) {
+	
 	std::ifstream file(filename);
 	if (!file.is_open()) {
-		std::cerr << "Error: Could not open JSON file '" << filename << "'" << std::endl;
+		std::cerr << "Error: Could not open file " << filename << std::endl;
 		return false;
 	}
 
@@ -82,22 +83,19 @@ bool CheckJsonFile(const std::string& filename) {
 		file >> jsonData;
 
 		if (jsonData.is_null()) {
-			std::cerr << "Error: JSON file '" << filename << "' is empty or invalid." << std::endl;
+			std::cerr << "Error: JSON file is empty or invalid." << std::endl;
 			return false;
 		}
 
-		// Optionally, you can validate the structure of the JSON data here
-		// For example, check if certain keys exist
-		if (!jsonData.contains("paths")) {
-			std::cerr << "Error: JSON file '" << filename << "' does not contain 'paths' key." << std::endl;
-			return false;
-		}
+		// You can add more validation checks here if needed
+		return true;
 
 	} catch (const nlohmann::json::parse_error& e) {
-		std::cerr << "Error: JSON parse error in file '" << filename << "': " << e.what() << std::endl;
+		std::cerr << "Error: JSON parsing error: " << e.what() << std::endl;
 		return false;
 	}
 
+	file.close();
 	return true;
 }
 #endif

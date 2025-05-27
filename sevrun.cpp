@@ -43,14 +43,13 @@ int main(int argc, char* argv[])
 	std::filesystem::path exeDir = std::filesystem::path(exepath).parent_path();
 	// Check if paths.json exists in the same directory as the executable
 	std::string jsonPath = exeDir.string() + "\\paths.json";
-	std::cout << "Using paths.json from: " << jsonPath << std::endl;
 
 	if (!std::filesystem::exists(jsonPath)) {
 		std::cerr << "Error: paths.json not found in the executable directory." << std::endl;
 		return 1;
 	}
 
-	if (!CheckJsonFile("paths.json")) return 1;	
+	if (!CheckJsonFile(jsonPath)) return 1;	
 
 	return 0;
 }
