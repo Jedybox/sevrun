@@ -14,8 +14,6 @@
 #include <filesystem>
 #include "sevrun.h"
 
-using namespace std;
-
 
 int main(int argc, char* argv[])
 {
@@ -45,7 +43,7 @@ int main(int argc, char* argv[])
 	std::string jsonPath = exeDir.string() + "\\paths.json";
 
 	if (!std::filesystem::exists(jsonPath)) {
-		std::cerr << "Error: paths.json not found in the executable directory." << std::endl;
+		std::cerr << "Error: json file for configurations of paths is missing " << std::endl;
 		return 1;
 	}
 
