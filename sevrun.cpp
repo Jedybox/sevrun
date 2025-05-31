@@ -14,7 +14,6 @@
 #include <filesystem>
 #include "sevrun.h"
 
-
 int main(int argc, char* argv[])
 {
 	if (argc < 2) {
@@ -22,32 +21,38 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	for (const auto& arg : std::vector<std::string>(argv + 1, argv + argc)) {
-		if (IsValidFlag(arg) || IsValidCommand(arg)) continue;
-		else {
-			std::cerr << "Error: Unknown argument '" << arg << "'" << std::endl;
-			return 1;
-		}
+	std::string command = std::string(argv[1]);
+
+	if (!IsValidCommand(command)) {
+		std::cerr << "Error: invalid command '" << command << "'" << std::endl;
+		std::cerr << "Use 'sevrun help' to see the list of valid commands." << std::endl;
+		return 1;
 	}
 
-	if ("help" == std::string(argv[1])) {
+	if ("help" == command) {
 		PrintHelp();
 		return 0;
 	}
 
-	// Get the directory of the executable
-	char exepath[MAX_PATH];
-	GetModuleFileNameA(NULL, exepath, MAX_PATH);
-	std::filesystem::path exeDir = std::filesystem::path(exepath).parent_path();
-	// Check if paths.json exists in the same directory as the executable
-	std::string jsonPath = exeDir.string() + "\\paths.json";
+	if (!CheckJsonFile()) return 1;
+	if ("add" == command) {
+		if (argc < 5) {
+			std::cerr << "Error: 'add' command requires a name, path, and a runner." << std::endl;
+			return 1;
+		}
+		std::string pathName = argv[2];
+		std::string pathAndFile = argv[3];
+		std::string runner = argv[4];
+		
+		try {
+			addPathToJson(pathAndFile, pathName, runner);
+		} catch (const std::exception& e) {
+			std::cerr << e.what() << std::endl;
+			return 1;
+		}
 
-	if (!std::filesystem::exists(jsonPath)) {
-		std::cerr << "Error: json file for configurations of paths is missing " << std::endl;
-		return 1;
+		return 0;
 	}
-
-	if (!CheckJsonFile(jsonPath)) return 1;	
 
 	return 0;
 }
